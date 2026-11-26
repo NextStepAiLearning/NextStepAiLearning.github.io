@@ -226,6 +226,206 @@ html[data-theme="light"] .tool-foot a{background:rgba(232,239,247,.75);color:#31
 @media(max-width:560px){.tool-card{padding:18px}.tool-card p{min-height:0}.tool-inputs{grid-template-columns:1fr 1fr}.theme-toggle{font-size:11px;padding:7px 9px}}
 @media(prefers-reduced-motion:reduce){.theme-toggle,.tool-btn{transition:none}}
 
+
+/* v18.1 navigation fit: keep every desktop link visible without horizontal scrolling */
+header .w{
+  flex-direction:column;
+  align-items:stretch;
+  gap:8px;
+}
+header .lg{align-self:flex-start;flex:0 0 auto}
+header nav{
+  display:flex;
+  width:100%;
+  min-width:0;
+  max-width:none;
+  flex:0 1 auto;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:3px 4px;
+  overflow:visible;
+  white-space:normal;
+  scrollbar-width:auto;
+}
+header nav::-webkit-scrollbar{display:none}
+header nav a{
+  flex:0 0 auto;
+  white-space:nowrap;
+  padding:8px clamp(7px,.8vw,12px);
+  font-size:clamp(13px,1.12vw,15px);
+}
+header nav .cta{
+  margin-left:0;
+  padding-inline:clamp(10px,1vw,15px);
+  text-align:center;
+}
+header nav .theme-toggle{flex:0 0 auto;white-space:nowrap}
+@media(max-width:760px){
+  header .w{gap:7px}
+  header nav{justify-content:flex-start;gap:3px}
+  header nav a{font-size:14px;padding:8px 10px}
+}
+
+
+/* NextStep v19 — curated AI directory layout */
+#directory .directory-search-row{max-width:720px;margin:0 0 26px}
+#directory .directory-layout{
+ display:grid;
+ grid-template-columns:232px minmax(0,1fr);
+ gap:24px;
+ align-items:start;
+}
+#directory .directory-sidebar{
+ position:sticky;
+ top:142px;
+ min-width:0;
+ padding:18px 14px 16px;
+ border:1px solid rgba(255,255,255,.17);
+ border-radius:22px;
+ background:linear-gradient(155deg,rgba(255,255,255,.105),rgba(255,255,255,.035));
+ -webkit-backdrop-filter:blur(24px) saturate(155%);
+ backdrop-filter:blur(24px) saturate(155%);
+ box-shadow:0 18px 42px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.13);
+}
+#directory .directory-sidebar-title{
+ display:flex;align-items:center;gap:10px;
+ padding:4px 10px 15px;
+ margin-bottom:9px;
+ color:var(--tx);
+ font:700 14px Sora,Inter,sans-serif;
+ letter-spacing:.2px;
+ border-bottom:1px solid rgba(255,255,255,.11);
+}
+#directory .directory-sidebar-mark{
+ display:inline-flex;align-items:center;justify-content:center;
+ width:28px;height:28px;border-radius:9px;
+ color:#0b1530;background:linear-gradient(135deg,var(--gold),var(--gold2));
+ box-shadow:0 5px 14px rgba(212,175,90,.2);
+}
+#directory .directory-category-list{display:flex;flex-direction:column;gap:5px}
+#directory .directory-category-list button{
+ display:flex;align-items:center;gap:10px;width:100%;min-width:0;
+ margin:0;padding:10px 11px;
+ border:1px solid transparent;border-radius:12px;
+ color:#cbd5ee;background:transparent;
+ text-align:left;white-space:normal;
+ font:600 13.5px/1.35 Inter,system-ui,sans-serif;
+ cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s;
+}
+#directory .directory-category-list button:before{
+ content:"";flex:0 0 6px;width:6px;height:6px;border-radius:50%;
+ background:rgba(212,175,90,.58);box-shadow:0 0 0 3px rgba(212,175,90,.08);
+}
+#directory .directory-category-list button:hover{
+ color:#fff;background:rgba(255,255,255,.075);border-color:rgba(255,255,255,.09);
+}
+#directory .directory-category-list button.on{
+ color:#fff;
+ background:linear-gradient(105deg,rgba(212,175,90,.24),rgba(236,217,160,.09));
+ border-color:rgba(236,217,160,.31);
+ box-shadow:inset 3px 0 0 var(--gold),0 5px 16px rgba(0,0,0,.12);
+}
+#directory .directory-category-list button.on:before{
+ background:var(--gold2);box-shadow:0 0 0 3px rgba(212,175,90,.15),0 0 10px rgba(236,217,160,.45);
+}
+#directory .directory-main{min-width:0}
+#directory .directory-results-head{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ min-height:34px;margin:0 2px 12px;
+}
+#directory .directory-results-label{
+ color:var(--gold);font:700 11px Inter,sans-serif;letter-spacing:2.2px;
+}
+#directory .directory-grid{
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:16px;
+ align-items:stretch;
+}
+#directory .directory-grid .dc{
+ min-width:0;min-height:280px;padding:22px 20px 18px;
+ border-radius:18px;
+ background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045));
+ border-color:rgba(255,255,255,.14);
+ box-shadow:0 12px 30px rgba(0,0,0,.19),inset 0 1px 0 rgba(255,255,255,.1);
+}
+#directory .directory-grid .dc:after{
+ content:"";position:absolute;right:-32px;top:-42px;width:112px;height:112px;
+ border-radius:50%;background:radial-gradient(circle,rgba(212,175,90,.11),transparent 70%);
+ pointer-events:none;
+}
+#directory .directory-grid .dc .tag{
+ font-size:10px;letter-spacing:1.15px;padding:5px 9px;margin-bottom:14px;
+}
+#directory .directory-grid .dc>b{
+ font:650 17px/1.35 Sora,Inter,sans-serif;letter-spacing:-.2px;
+ margin:0 0 9px;overflow-wrap:anywhere;
+}
+#directory .directory-grid .dc>p{
+ font-size:13.5px;line-height:1.58;color:#bdc8e2;
+}
+#directory .directory-grid .dc .bf{
+ margin-top:12px;font-size:12px;line-height:1.45;color:var(--gold2);
+}
+#directory .directory-grid .dc .ft{
+ padding-top:16px;gap:8px;align-items:center;
+}
+#directory .directory-grid .dc .pn{font-size:11px;line-height:1.35}
+#directory .directory-grid .dc .vl{
+ flex:0 0 auto;padding:8px 11px;border-radius:10px;font-size:12px;
+}
+#directory .directory-grid .dc:hover{
+ transform:translateY(-4px);
+ border-color:rgba(236,217,160,.36);
+ box-shadow:0 18px 36px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.13);
+}
+#directory .directory-grid>.sub{grid-column:1/-1;padding:26px;border:1px dashed var(--gb);border-radius:16px}
+html[data-theme="light"] #directory .directory-sidebar{
+ background:linear-gradient(155deg,rgba(255,255,255,.82),rgba(255,255,255,.54));
+ border-color:rgba(255,255,255,.9);
+ box-shadow:0 16px 38px rgba(47,70,99,.12),inset 0 1px 0 rgba(255,255,255,.95);
+}
+html[data-theme="light"] #directory .directory-sidebar-title{color:#243f60;border-bottom-color:rgba(50,75,108,.12)}
+html[data-theme="light"] #directory .directory-category-list button{color:#4a607c}
+html[data-theme="light"] #directory .directory-category-list button:hover{color:#203c5e;background:rgba(255,255,255,.68);border-color:rgba(50,75,108,.08)}
+html[data-theme="light"] #directory .directory-category-list button.on{color:#203c5e;background:linear-gradient(105deg,rgba(212,175,90,.22),rgba(255,255,255,.72));border-color:rgba(184,137,53,.28)}
+html[data-theme="light"] #directory .directory-grid .dc{
+ background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(255,255,255,.62));
+ border-color:rgba(89,117,150,.18);
+ box-shadow:0 12px 28px rgba(47,70,99,.09),inset 0 1px 0 rgba(255,255,255,.95);
+}
+html[data-theme="light"] #directory .directory-grid .dc>p{color:#526983}
+html[data-theme="light"] #directory .directory-grid .dc .pn{color:#687c95}
+@media(max-width:1100px){
+ #directory .directory-layout{grid-template-columns:205px minmax(0,1fr);gap:18px}
+ #directory .directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ #directory .directory-layout{grid-template-columns:minmax(0,1fr);gap:16px}
+ #directory .directory-sidebar{position:relative;top:auto;padding:13px 12px;border-radius:17px}
+ #directory .directory-sidebar-title{padding:2px 7px 10px;margin-bottom:10px}
+ #directory .directory-category-list{
+  flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
+  gap:7px;padding:1px 1px 5px;scrollbar-width:thin;
+ }
+ #directory .directory-category-list button{
+  flex:0 0 auto;width:auto;white-space:nowrap;padding:9px 12px;
+  border-color:rgba(255,255,255,.09);background:rgba(255,255,255,.035);
+ }
+ #directory .directory-category-list button.on{box-shadow:inset 0 -2px 0 var(--gold)}
+ #directory .directory-category-list button:before{display:none}
+ #directory .directory-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+ #directory .directory-grid .dc{min-height:270px;padding:18px 16px}
+}
+@media(max-width:520px){
+ #directory .directory-grid{grid-template-columns:minmax(0,1fr)}
+ #directory .directory-grid .dc{min-height:0}
+ #directory .directory-grid .dc .ft{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){
+ #directory .directory-category-list button,#directory .directory-grid .dc{transition:none}
+}
+
 </style></head><body>
 <div id="pre"><svg width="84" height="84" viewBox="0 0 48 48"><circle class="rg" cx="24" cy="24" r="22" fill="none" stroke="#d4af5a" stroke-width="1.6"/><path class="st1" d="M11 36h8v-8h8v-8h8v-3" fill="none" stroke="#ecd9a0" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path class="ar" d="M35 8l5.5 8h-11z" fill="#d4af5a"/></svg><div class="pn">Next<em>Step</em> AI Learning</div><div class="pb"><i></i></div></div>
 <div id="sp"></div><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
@@ -307,8 +507,17 @@ html[data-theme="light"] .tool-foot a{background:rgba(232,239,247,.75);color:#31
 
 <section class="alt" id="directory"><div class="w"><div class="k rv">AI TOOLS DIRECTORY</div><h2 class="rv">Find the right AI tool for your work</h2>
 <p class="sub rv">A curated directory of useful AI tools, grouped by purpose. Search by name or task, filter by category, and open the official website of any tool.</p>
-<div class="tb rv"><div class="sr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a9b3d3" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="ds" type="search" placeholder="Search tools or tasks, e.g. meeting, Excel, translate" autocomplete="off"></div><span class="cnt" id="dcnt"></span></div>
-<div class="chips rv" id="dch"></div><div class="gr" id="dg"></div>
+<div class="tb rv directory-search-row"><div class="sr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a9b3d3" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="ds" type="search" placeholder="Search tools or tasks, e.g. meeting, Excel, translate" autocomplete="off"></div></div>
+<div class="directory-layout rv">
+ <aside class="directory-sidebar" aria-label="AI tool categories">
+  <div class="directory-sidebar-title"><span class="directory-sidebar-mark" aria-hidden="true">✦</span><span>Categories</span></div>
+  <div class="directory-category-list" id="dch"></div>
+ </aside>
+ <div class="directory-main">
+  <div class="directory-results-head"><span class="directory-results-label">EXPLORE TOOLS</span><span class="cnt" id="dcnt" aria-live="polite"></span></div>
+  <div class="gr directory-grid" id="dg"></div>
+ </div>
+</div>
 <div class="note">Last reviewed: November 2026. Features, limits and prices change often, so always confirm on the official website. Tool names and logos belong to their owners, and listing a tool is not an endorsement or a partnership.</div></div></section>
 
 <section id="chooser"><div class="w"><div class="k rv">QUICK GUIDE</div><h2 class="rv">Which tool for which job</h2>
