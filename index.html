@@ -613,6 +613,15 @@ footer a{display:inline-block;padding:9px 5px}footer p{line-height:1.6}
 html[data-theme] .c.pl>span.bd{color:#0b1530;font-size:12px}
 html[data-theme="light"] .fm b{color:#6b4c0f}
 .theme-toggle{min-height:40px}.tool-btn,.quick-tools a{min-height:40px;display:inline-flex;align-items:center}
+/* v35: no blank gaps. Tall blocks reveal as soon as they touch the screen; header does not eat the phone screen */
+.directory-layout.rv,.gr.rv,.pls.rv{opacity:1;transform:none}
+@media(max-width:760px){
+ header{position:relative}
+ header nav{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+}
+.apay h3{font:700 20px Sora,sans-serif;margin:0 0 8px}.apay p{color:var(--mu);margin:8px 0;font-size:15.5px;line-height:1.6}.apay .pyt{font-size:18px;color:var(--tx)}.apay .pyt b{color:var(--gold2);font-size:22px}
+.pyr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;margin:8px 0;border:1px solid var(--gb);border-radius:12px;background:var(--gl)}.pyr span{min-width:64px;color:var(--mu);font-weight:600}.pyr b{font:700 19px Sora,sans-serif;letter-spacing:1px;flex:1;color:var(--tx)}.pyr .cpy{padding:8px 16px;font-size:14px}
+.apay #apb{margin-top:14px}.pyh{margin:10px 0;padding:14px 16px;border-radius:12px;border:1px solid var(--gold);background:var(--gl);color:var(--tx);font-size:15.5px;line-height:1.6}.pyh b{color:var(--gold2)}.pyh ol{margin:8px 0 0;padding-left:22px;color:var(--mu)}.pyh ol b{color:var(--tx)}
 </style></head><body>
 <a class="skip" href="#main-content">Skip to main content</a>
 <div id="pre"><svg width="84" height="84" viewBox="0 0 48 48"><circle class="rg" cx="24" cy="24" r="22" fill="none" stroke="#d4af5a" stroke-width="1.6"/><path class="st1" d="M11 36h8v-8h8v-8h8v-3" fill="none" stroke="#ecd9a0" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path class="ar" d="M35 8l5.5 8h-11z" fill="#d4af5a"/></svg><div class="pn">Next<em>Step</em> AI Learning</div><div class="pb"><i></i></div></div>
@@ -732,13 +741,13 @@ html[data-theme="light"] .fm b{color:#6b4c0f}
 <div class="ap-note rv"><strong>Open access for participants.</strong> Training applications, certificate re-issues and assessment requests on this site are currently offered without a separate platform fee. Corporate or on-site programmes may be quoted separately after we understand your team’s needs.</div>
 <div class="glass ap rv"><div class="apt" id="apt"><button type="button" class="on" data-t="training">Apply for training</button><button type="button" data-t="certificate">Request a certificate</button><button type="button" data-t="assessment">Request an assessment</button></div>
 <p class="apd" id="apd"></p>
-<form id="apf" novalidate><div class="apg" id="apg"></div><input type="text" name="website" id="aph" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
+<form id="apf" novalidate><div class="apg" id="apg"></div><div id="apay" class="apay" hidden></div><input type="text" name="website" id="aph" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
 <label class="apc"><input type="checkbox" id="apk"> I confirm that the information above is correct, and I agree that NextStep AI Learning may use it to respond to my request and to prepare my certificate. See the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="terms.html" target="_blank" rel="noopener">Terms</a>.</label>
 <div class="apm" id="apm" role="status"></div><button class="b g" id="aps" type="submit">Submit request</button></form>
 <div class="apok" id="apok" hidden></div></div></div></section>
 <section class="alt" id="directory"><div class="w"><div class="k rv">AI TOOLS DIRECTORY</div><h2 class="rv">Find the right AI tool for your work</h2>
 <p class="sub rv">A curated directory of useful AI tools, grouped by purpose. Search by name or task, filter by category, and open the official website of any tool.</p>
-<div class="tb rv directory-search-row"><div class="sr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a9b3d3" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="ds" aria-label="Search AI tools" type="search" placeholder="Search tools or tasks, e.g. meeting, Excel, translate" autocomplete="off"></div></div>
+<div class="tb rv directory-search-row"><div class="sr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a9b3d3" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="ds" aria-label="Search AI tools" type="search" placeholder="Search tools or tasks" autocomplete="off"></div></div>
 <div class="directory-layout rv">
  <aside class="directory-sidebar" aria-label="AI tool categories">
   <div class="directory-sidebar-title"><span class="directory-sidebar-mark" aria-hidden="true">✦</span><span>Categories</span></div>
@@ -1822,7 +1831,7 @@ if(document.readyState==='complete')go();else addEventListener('load',go);setTim
 var sp=document.getElementById('sp');
 addEventListener('scroll',function(){var h=document.documentElement;if(h.scrollTop<300)document.querySelectorAll('#nv a.on').forEach(function(a){a.classList.remove('on')});sp.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+'%'},{passive:true});
 function obs(){var els=document.querySelectorAll('.rv:not(.in)');if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return}
- var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){io.observe(e)})}
+ var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:0,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){io.observe(e)})}
 obs();
 if('IntersectionObserver' in window){var links=[].slice.call(document.querySelectorAll('#nv a[href^="#"]:not(.cta)'));
  var so=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+x.target.id)})}})},{rootMargin:'-45% 0px -50% 0px'});
@@ -1857,6 +1866,7 @@ function showBiz(d){var n=d.whatsapp||'alakib.rzn';
 fetch('https://script.google.com/macros/s/AKfycbyZGvLqByBlYr9I629_FC08W9sp_JSXhERwIPLr1Ddc7kDVAmwfJnWXdxrgzLsXpuHO/exec',{method:'POST',body:JSON.stringify({op:'site'})}).then(function(r){return r.json()}).then(function(d){
  if(!d||d.error)return;
  if(d.photo)document.getElementById('ph').src=d.photo;
+ window.NSPAID=d.paid||null;if(window.NSrefresh)window.NSrefresh();
  try{showBiz(d)}catch(e){}
  var pr=d.projects||[];if(!pr.length)return;
  real.innerHTML=pr.map(function(p,i){return '<div class="c pj rv" style="--d:'+(i%3*.1)+'s">'+(p.image?'<img loading="lazy" decoding="async" src="'+E(p.image)+'" alt="" style="width:100%;border-radius:12px;margin-bottom:14px">':'')+(p.tag?'<span class="tag">'+E(p.tag)+'</span>':'')+'<b>'+E(p.title)+'</b><p>'+E(p.desc)+'</p></div>'}).join('');
@@ -1880,7 +1890,21 @@ function fld(f,i){var id='ap_'+f[0],r=f[3]?' *':'',h=f[2]?'<small>'+E(f[2])+'</s
  else if(f[4]=='area')ctl='<textarea id="'+id+'" maxlength="400"></textarea>';
  else ctl='<input id="'+id+'" type="'+(f[4]=='tel'?'tel':f[4])+'"'+(f[4]=='tel'?' inputmode="tel"':'')+(f[4]=='number'?' min="1" max="1000"':'')+' maxlength="120">';
  return '<div class="'+(f[4]=='area'?'full':'')+'"><label for="'+id+'">'+E(f[1])+r+h+'</label>'+ctl+'</div>'}
-function build(){$('apd').textContent=DESC[T];$('apg').innerHTML=C.concat(F[T]).map(fld).join('');$('apm').textContent='';$('apm').className='apm'}
+var step=1;
+function price(){var P=window.NSPAID;return P&&P.on&&P.prices?String(P.prices[T]||''):''}
+function payHow(P){var m=P.mode||'personal';if(m=='custom'&&P.instr)return '<p class="pyh">'+E(P.instr)+'</p>';if(P.instr)return '<p class="pyh">'+E(P.instr)+'</p>';
+ if(m=='merchant')return '<div class="pyh"><b>Pay to our merchant account</b><ol><li>Open your bKash, Nagad or Rocket app and choose <b>Payment</b>.</li><li>Enter the merchant number shown below.</li><li>Enter the exact amount and confirm with your PIN.</li><li>Copy the Transaction ID from your confirmation message.</li></ol></div>';
+ return '<div class="pyh"><b>Send Money to our personal account</b><ol><li>Open your bKash, Nagad or Rocket app and choose <b>Send Money</b>. Please do not use Cash Out or Payment.</li><li>Enter the number shown below and the exact amount.</li><li>Confirm with your PIN.</li><li>Copy the Transaction ID from your confirmation message.</li></ol></div>'}
+function numRows(P){if(!P.split)return row('bKash · Nagad · Rocket',P.number);return [['bKash',P.bkash],['Nagad',P.nagad],['Rocket',P.rocket]].filter(function(x){return x[1]}).map(function(x){return row(x[0],x[1])}).join('')}
+function row(n,v){return '<div class="pyr"><span>'+n+'</span><b>'+E(v)+'</b><button type="button" class="b dk cpy" data-c="'+E(v)+'">Copy</button></div>'}
+function methods(P){return P.split?[['bKash',P.bkash],['Nagad',P.nagad],['Rocket',P.rocket]].filter(function(x){return x[1]}).map(function(x){return x[0]}):['bKash','Nagad','Rocket']}
+function resetPay(){step=1;$('apay').hidden=true;$('apay').innerHTML='';$('apg').hidden=false;[].forEach.call(document.querySelectorAll('#apf .apc'),function(x){x.hidden=false});$('aps').textContent=price()?'Continue to payment':'Submit request'}
+function payPanel(){var P=window.NSPAID,pr=price(),row=function(n,v){return '<div class="pyr"><span>'+n+'</span><b>'+E(v)+'</b><button type="button" class="b dk cpy" data-c="'+E(v)+'">Copy</button></div>'};
+ $('apay').innerHTML='<h3>Payment</h3><p class="pyt">Amount to pay: <b>'+E(pr)+'</b></p>'+payHow(P)+numRows(P)+(P.note?'<p>'+E(P.note)+'</p>':'')+'<p>Then fill in the details of your payment:</p><div class="apg"><div><label for="ap_pm">Paid with *</label><select id="ap_pm"><option value="">Select…</option>'+methods(P).map(function(m){return '<option>'+m+'</option>'}).join('')+'</select></div><div><label for="ap_tx">Transaction ID *<small>From the confirmation message of your payment</small></label><input id="ap_tx" maxlength="20" autocomplete="off"></div><div><label for="ap_ps">Mobile number you paid from *</label><input id="ap_ps" type="tel" inputmode="tel" maxlength="15"></div></div><button type="button" class="b dk" id="apb">← Back to details</button>';
+ $('apay').hidden=false;$('apg').hidden=true;[].forEach.call(document.querySelectorAll('#apf .apc'),function(x){x.hidden=true});$('aps').textContent='Submit request and payment';
+ $('apb').onclick=resetPay;[].forEach.call($('apay').querySelectorAll('.cpy'),function(b){b.onclick=function(){var v=b.dataset.c;if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(v).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)},function(){});else b.textContent=v}});$('apay').scrollIntoView({block:'nearest'})}
+window.NSrefresh=function(){if(step==1)resetPay()};
+function build(){resetPay();$('apd').textContent=DESC[T];$('apg').innerHTML=C.concat(F[T]).map(fld).join('');$('apm').textContent='';$('apm').className='apm'}
 $('apt').onclick=function(e){var b=e.target.closest('button');if(!b)return;T=b.dataset.t;[].forEach.call(this.children,function(x){x.classList.toggle('on',x===b)});build()};
 function msg(t,ok){$('apm').textContent=t;$('apm').className='apm'+(ok?' ok':'')}
 $('apf').onsubmit=function(e){e.preventDefault();var f={},all=C.concat(F[T]),i,x,v;
@@ -1888,11 +1912,17 @@ $('apf').onsubmit=function(e){e.preventDefault();var f={},all=C.concat(F[T]),i,x
  if(f.phone.replace(/\D/g,'').length<10){msg('Please enter a valid mobile number.');$('ap_phone').focus();return}
  if(!/^\S+@\S+\.\S+$/.test(f.email)){msg('Please enter a valid email address.');$('ap_email').focus();return}
  if(!$('apk').checked){msg('Please tick the confirmation box.');return}
- f.consent=1;var b=$('aps');b.classList.add('ld');msg('');
+ f.consent=1;
+ if(price()&&step==1){step=2;msg('');payPanel();return}
+ if(price()){f.pay_method=$('ap_pm').value;f.pay_txid=$('ap_tx').value.trim();f.pay_sender=$('ap_ps').value.trim();
+  if(!f.pay_method){msg('Please choose how you paid.');return}
+  if(!/^[A-Za-z0-9]{6,20}$/.test(f.pay_txid)){msg('Please enter the transaction ID (letters and numbers only).');$('ap_tx').focus();return}
+  if(f.pay_sender.replace(/\D/g,'').length<10){msg('Please enter the mobile number you paid from.');$('ap_ps').focus();return}}
+ var b=$('aps');b.classList.add('ld');msg('');
  fetch(API,{method:'POST',body:JSON.stringify({op:'apply',type:T,f:f,website:$('aph').value})}).then(function(r){return r.json()}).catch(function(){return{error:'Connection problem. Please check your internet and try again, or message us on WhatsApp.'}}).then(function(r){
   b.classList.remove('ld');if(r.error){msg(r.error);return}
   $('apf').hidden=true;$('apt').hidden=true;$('apd').hidden=true;var o=$('apok');o.hidden=false;
-  o.innerHTML='<h3>Request received</h3><p>Thank you, '+E(f.name)+'. Your request has been recorded. Please keep this reference number.</p><div class="ref">'+E(r.id||'')+'</div><p>We will contact you on '+E(f.phone)+' or '+E(f.email)+' after reviewing it.'+(T=='assessment'?' Once approved, log in to the Assessment Portal with your mobile number.':'')+'</p><button class="b g" type="button" id="apn">Submit another request</button>';
+  o.innerHTML='<h3>Request received</h3><p>Thank you, '+E(f.name)+'. Your request has been recorded. Please keep this reference number.</p><div class="ref">'+E(r.id||'')+'</div><p>'+(r.paid?'Your payment details were received. We will verify the payment and then process your request. ':'')+'We will contact you on '+E(f.phone)+' or '+E(f.email)+' after reviewing it. A confirmation email has been sent to you.'+(T=='assessment'?' Once approved, log in to the Assessment Portal with your mobile number.':'')+'</p><button class="b g" type="button" id="apn">Submit another request</button>';
   $('apn').onclick=function(){o.hidden=true;$('apf').hidden=false;$('apt').hidden=false;$('apd').hidden=false;$('apf').reset();build()}})};
 build()})();
 
