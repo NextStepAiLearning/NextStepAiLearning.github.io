@@ -133,7 +133,7 @@ footer p{max-width:760px;margin:8px auto}footer a{color:var(--gold2)}footer a:ho
 .apg label{display:block;font-size:14.5px;font-weight:600;color:var(--mu)}.apg label small{display:block;font-weight:400;font-size:13px;opacity:.85;margin-top:2px}.apg .full{grid-column:1/-1}
 .apg input,.apg select,.apg textarea{width:100%;margin-top:7px;font:17px Inter,sans-serif;color:var(--tx);background:rgba(255,255,255,.07);border:1px solid var(--gb);border-radius:14px;padding:14px 16px;min-height:52px}.apg textarea{min-height:100px;resize:vertical}.apg select option{color:#111}
 .apg input:focus,.apg select:focus,.apg textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
-.apc{display:flex;gap:12px;align-items:flex-start;margin:20px 0 6px;font-size:15px;color:var(--mu);cursor:pointer}.apc input{width:22px;height:22px;flex:none;margin-top:3px;accent-color:#d4af5a}
+.apc{display:flex;gap:12px;align-items:flex-start;margin:20px 0 6px;font-size:15px;color:var(--mu);cursor:pointer}.apc .apx{flex:1 1 0;min-width:0;line-height:1.55;overflow-wrap:anywhere}.apc input{width:22px;height:22px;flex:none;margin-top:3px;accent-color:#d4af5a}
 .apm{min-height:24px;margin:8px 0;font-size:15.5px;color:#ff8f8f}.apm.ok{color:#6fe0a0}
 #aps{position:relative;overflow:hidden;border:0;cursor:pointer;font-size:17px}#aps.ld{pointer-events:none;color:transparent}#aps.ld:after{content:"";position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border:2.5px solid rgba(0,0,0,.25);border-top-color:#111;border-radius:50%;animation:apsp .7s linear infinite}@keyframes apsp{to{transform:rotate(360deg)}}
 .apok{text-align:center;padding:28px 10px}.apok h3{font:800 26px Sora,sans-serif;margin:0 0 8px}.apok .ref{display:inline-block;margin:12px 0;padding:10px 22px;border-radius:12px;border:1px dashed var(--gold);font:700 22px Sora,sans-serif;letter-spacing:3px;color:var(--gold2)}
@@ -742,7 +742,7 @@ html[data-theme="light"] .fm b{color:#6b4c0f}
 <div class="glass ap rv"><div class="apt" id="apt"><button type="button" class="on" data-t="training">Apply for training</button><button type="button" data-t="certificate">Request a certificate</button><button type="button" data-t="assessment">Request an assessment</button></div>
 <p class="apd" id="apd"></p>
 <form id="apf" novalidate><div class="apg" id="apg"></div><div id="apay" class="apay" hidden></div><input type="text" name="website" id="aph" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
-<label class="apc"><input type="checkbox" id="apk"> I confirm that the information above is correct, and I agree that NextStep AI Learning may use it to respond to my request and to prepare my certificate. See the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="terms.html" target="_blank" rel="noopener">Terms</a>.</label>
+<label class="apc"><input type="checkbox" id="apk"><span class="apx">I confirm that the information above is correct, and I agree that NextStep AI Learning may use it to respond to my request and to prepare my certificate. See the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="terms.html" target="_blank" rel="noopener">Terms</a>.</span></label>
 <div class="apm" id="apm" role="status"></div><button class="b g" id="aps" type="submit">Submit request</button></form>
 <div class="apok" id="apok" hidden></div></div></div></section>
 <section class="alt" id="directory"><div class="w"><div class="k rv">AI TOOLS DIRECTORY</div><h2 class="rv">Find the right AI tool for your work</h2>
@@ -1906,6 +1906,8 @@ function payPanel(){var P=window.NSPAID,pr=price(),row=function(n,v){return '<di
 window.NSrefresh=function(){if(step==1)resetPay()};
 function build(){resetPay();$('apd').textContent=DESC[T];$('apg').innerHTML=C.concat(F[T]).map(fld).join('');$('apm').textContent='';$('apm').className='apm'}
 $('apt').onclick=function(e){var b=e.target.closest('button');if(!b)return;T=b.dataset.t;[].forEach.call(this.children,function(x){x.classList.toggle('on',x===b)});build()};
+function hashTab(){var m=/^#apply-(training|certificate|assessment)$/.exec(location.hash);if(!m)return;var b=$('apt').querySelector('[data-t="'+m[1]+'"]');if(b)b.click();var a=document.getElementById('apply');if(a)setTimeout(function(){a.scrollIntoView({behavior:'smooth',block:'start'})},60)}
+window.addEventListener('hashchange',hashTab);setTimeout(hashTab,400);
 function msg(t,ok){$('apm').textContent=t;$('apm').className='apm'+(ok?' ok':'')}
 $('apf').onsubmit=function(e){e.preventDefault();var f={},all=C.concat(F[T]),i,x,v;
  for(i=0;i<all.length;i++){x=all[i];v=$('ap_'+x[0]).value.trim();f[x[0]]=v;if(x[3]&&!v){msg('Please fill in: '+x[1]+'.');$('ap_'+x[0]).focus();return}}
