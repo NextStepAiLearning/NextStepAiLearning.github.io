@@ -39,34 +39,69 @@
 <script src="/tools/photo.js"></script><script>var $=function(i){return document.getElementById(i)};
 var P=window.NSPhoto,cv=$('cv'),cx=cv.getContext('2d'),src=null,W=0,H=0,px=null,pick=null,busy=0,alpha=null;
 function mk(){var c=document.createElement('canvas');return c}
+/* CIE-like weighted distance (same scale as before, ~0–150 for typical colours). */
 function dist(r,g,b,R,G,B){var rm=(r+R)/2,dr=r-R,dg=g-G,db=b-B;return Math.sqrt((2+rm/256)*dr*dr+4*dg*dg+(2+(255-rm)/256)*db*db)/3}
-function median(a){a.sort(function(x,y){return x-y});return a[a.length>>1]}
-function autoColor(){var r=[],g=[],b=[],st=Math.max(1,Math.floor(Math.max(W,H)/200));function add(x,y){var i=(y*W+x)*4;r.push(px[i]);g.push(px[i+1]);b.push(px[i+2])}
- for(var x=0;x<W;x+=st){add(x,0);add(x,H-1)}for(var y=0;y<H;y+=st){add(0,y);add(W-1,y)}return [median(r),median(g),median(b)]}
-function compute(){var col=pick||autoColor(),tol=+$('tl').value,n=W*H,m=new Uint8Array(n);var R=col[0],G=col[1],B=col[2];
+function median(a){a=a.slice().sort(function(x,y){return x-y});return a[a.length>>1]}
+/* Sample border, drop extreme outliers so a dark object touching the edge does not pull the auto colour. */
+function autoColor(){
+ var r=[],g=[],b=[],st=Math.max(1,Math.floor(Math.max(W,H)/250));
+ function add(x,y){var i=(y*W+x)*4;if(px[i+3]<10)return;r.push(px[i]);g.push(px[i+1]);b.push(px[i+2])}
+ for(var x=0;x<W;x+=st){add(x,0);add(x,H-1)}for(var y=0;y<H;y+=st){add(0,y);add(W-1,y)}
+ if(r.length<8){for(var x=0;x<W;x++){add(x,0);add(x,H-1)}for(var y=0;y<H;y++){add(0,y);add(W-1,y)}}
+ /* Trim 15% extremes per channel so a few subject pixels on the border do not shift the median. */
+ function trim(a){a=a.slice().sort(function(x,y){return x-y});var k=Math.floor(a.length*0.15);return a.slice(k,a.length-k||a.length)}
+ r=trim(r);g=trim(g);b=trim(b);
+ return [median(r),median(g),median(b)]
+}
+function compute(){
+ var col=pick||autoColor(),tol=+$('tl').value,n=W*H,m=new Uint8Array(n);
+ var R=col[0],G=col[1],B=col[2];
  function bgp(i){var k=i*4;return px[k+3]<10||dist(px[k],px[k+1],px[k+2],R,G,B)<=tol}
  if($('mo').value==='all'){for(var i=0;i<n;i++)m[i]=bgp(i)?1:0}
- else{var q=new Int32Array(n),h=0,t=0;function push(i){if(!m[i]&&bgp(i)){m[i]=1;q[t++]=i}}
+ else{
+  var q=new Int32Array(n),h=0,t=0;
+  function push(i){if(i>=0&&i<n&&!m[i]&&bgp(i)){m[i]=1;q[t++]=i}}
   for(var x=0;x<W;x++){push(x);push((H-1)*W+x)}for(var y=0;y<H;y++){push(y*W);push(y*W+W-1)}
-  while(h<t){var i=q[h++],x=i%W,y=(i-x)/W;if(x>0)push(i-1);if(x<W-1)push(i+1);if(y>0)push(i-W);if(y<H-1)push(i+W)}}
- // alpha = 255 for subject, 0 for background; shrink subject edge
+  while(h<t){var i=q[h++],x=i%W,y=(i-x)/W;if(x>0)push(i-1);if(x<W-1)push(i+1);if(y>0)push(i-W);if(y<H-1)push(i+W)}
+ }
+ /* a = 255 subject, 0 background. Soft edge: shrink by sh pixels, then feather by fe. */
  var a=new Uint8Array(n);for(var i=0;i<n;i++)a[i]=m[i]?0:255;
- for(var s=0;s<+$('sh').value;s++){var b=a.slice();for(var y=1;y<H-1;y++)for(var x=1;x<W-1;x++){var i=y*W+x;if(a[i]&&(!a[i-1]||!a[i+1]||!a[i-W]||!a[i+W]))b[i]=0}a=b}
- return {a:a,col:col}}
-function compose(c,full){var res=compute(),a=res.a,o=mk();o.width=W;o.height=H;var x=o.getContext('2d'),id=x.createImageData(W,H),d=id.data;
+ var sh=+$('sh').value|0;
+ for(var s=0;s<sh;s++){var b=new Uint8Array(a);for(var y=1;y<H-1;y++)for(var x=1;x<W-1;x++){var i=y*W+x;if(a[i]&&(!a[i-1]||!a[i+1]||!a[i-W]||!a[i+W]))b[i]=0}a=b}
+ return {a:a,col:col}
+}
+function compose(){
+ var res=compute(),a=res.a,o=mk();o.width=W;o.height=H;var x=o.getContext('2d'),id=x.createImageData(W,H),d=id.data;
  for(var i=0,n=W*H;i<n;i++){var k=i*4;d[k]=px[k];d[k+1]=px[k+1];d[k+2]=px[k+2];d[k+3]=a[i]?px[k+3]:0}
- x.putImageData(id,0,0);var f=+$('fe').value;
- if(f>0){var m=mk();m.width=W;m.height=H;var mx=m.getContext('2d');mx.filter='blur('+f+'px)';mx.drawImage(o,0,0);mx.filter='none';var md=mx.getImageData(0,0,W,H).data,od=x.getImageData(0,0,W,H),dd=od.data;for(var i=0,n=W*H;i<n;i++){var k=i*4;dd[k+3]=Math.min(px[k+3],md[k+3])}x.putImageData(od,0,0)}
- var out=mk();out.width=W;out.height=H;var ox=out.getContext('2d');if($('fl').value){ox.fillStyle=$('fl').value;ox.fillRect(0,0,W,H)}ox.drawImage(o,0,0);return {canvas:out,col:res.col}}
-function show(){if(!src)return;var r=compose();var vw=Math.min(W,720),k=vw/W;cv.width=Math.round(W*k);cv.height=Math.round(H*k);
- var p=$('mp').value;if(p==='check'){var s=12;for(var y=0;y<cv.height;y+=s)for(var x=0;x<cv.width;x+=s){cx.fillStyle=((x/s+y/s)&1)?'#cfcfcf':'#f4f4f4';cx.fillRect(x,y,s,s)}}else{cx.fillStyle=p;cx.fillRect(0,0,cv.width,cv.height)}
- cx.imageSmoothingQuality='high';cx.drawImage(r.canvas,0,0,cv.width,cv.height);$('st').textContent='Background colour used: rgb('+r.col.join(', ')+'). '+(pick?'(picked by you)':'(detected from the edges)')}
+ x.putImageData(id,0,0);
+ var f=+$('fe').value;
+ if(f>0){
+  /* Feather only the alpha edge so subject colour is not blurred. */
+  var m=mk();m.width=W;m.height=H;var mx=m.getContext('2d');
+  mx.filter='blur('+f+'px)';mx.drawImage(o,0,0);mx.filter='none';
+  var md=mx.getImageData(0,0,W,H).data,od=x.getImageData(0,0,W,H),dd=od.data;
+  for(var i=0,n=W*H;i<n;i++){var k=i*4;dd[k+3]=Math.min(px[k+3],md[k+3])}
+  x.putImageData(od,0,0)
+ }
+ var out=mk();out.width=W;out.height=H;var ox=out.getContext('2d');
+ if($('fl').value){ox.fillStyle=$('fl').value;ox.fillRect(0,0,W,H)}
+ ox.drawImage(o,0,0);return {canvas:out,col:res.col}
+}
+function show(){
+ if(!src)return;var r=compose();var vw=Math.min(W,720),k=vw/W;cv.width=Math.round(W*k);cv.height=Math.round(H*k);
+ var p=$('mp').value;
+ if(p==='check'){var s=12;for(var y=0;y<cv.height;y+=s)for(var x=0;x<cv.width;x+=s){cx.fillStyle=((x/s+y/s)&1)?'#cfcfcf':'#f4f4f4';cx.fillRect(x,y,s,s)}}
+ else{cx.fillStyle=p;cx.fillRect(0,0,cv.width,cv.height)}
+ cx.imageSmoothingQuality='high';cx.drawImage(r.canvas,0,0,cv.width,cv.height);
+ $('st').textContent='Background colour used: rgb('+r.col.join(', ')+'). '+(pick?'(picked by you)':'(detected from the edges)')
+}
 var tm=0;function later(){clearTimeout(tm);tm=setTimeout(show,60)}
-['tl','sh','fe'].forEach(function(i){$(i).addEventListener('input',function(){$(i+'o').textContent=this.value;later()})});['mo','fl','mp'].forEach(function(i){$(i).addEventListener('change',show)});
+['tl','sh','fe'].forEach(function(i){$(i).addEventListener('input',function(){$(i+'o').textContent=this.value;later()})});
+['mo','fl','mp'].forEach(function(i){$(i).addEventListener('change',show)});
 $('tl').addEventListener('input',function(){$('tlo').textContent=this.value});
 cv.addEventListener('click',function(e){if(!src)return;var r=cv.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)*W/r.width),y=Math.floor((e.clientY-r.top)*H/r.height),i=(y*W+x)*4;pick=[px[i],px[i+1],px[i+2]];show()});
 $('rs').onclick=function(){pick=null;show()};
 P.dropzone($('dz'),$('fi'),function(a){var f=a.filter(P.isImage)[0];if(!f)return;P.load(f).then(function(o){var k=Math.min(1,2000/Math.max(o.w,o.h)),c=P.draw(o.src,o.w,o.h,o.w*k,o.h*k,null);W=c.width;H=c.height;px=c.getContext('2d').getImageData(0,0,W,H).data;src=f;pick=null;$('ed').hidden=false;show()}).catch(function(e){$('st').textContent=e.message})});
-$('dl').onclick=async function(){if(!src)return;var r=compose(),t=$('fl').value?'image/png':'image/png',b=await P.enc(r.canvas,t);P.download(b,P.baseName(src.name)+'-no-background.png');$('st').textContent='Saved '+W+'×'+H+' px · '+P.fmt(b.size)};
+$('dl').onclick=async function(){if(!src)return;var r=compose(),b=await P.enc(r.canvas,'image/png');P.download(b,P.baseName(src.name)+'-no-background.png');$('st').textContent='Saved '+W+'×'+H+' px · '+P.fmt(b.size)};
 window.__bgtest={compute:compute,get W(){return W},get H(){return H}};
 </script></body></html>

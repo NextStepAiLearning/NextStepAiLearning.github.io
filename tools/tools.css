@@ -90,3 +90,7 @@ details.kc .tw{max-height:360px;overflow:auto;margin:8px 0}details.kc table{widt
 .fav[aria-pressed=true]{color:var(--gold2);border-color:var(--gold)}.fav:hover{border-color:var(--gold)}
 .favp{margin:0 0 6px}.greet{font:600 16px Inter,sans-serif;color:var(--gold2);margin:0 0 6px}
 #lgb{flex:none}
+
+/* v46: readable drop-down lists in dark and light */
+select option,select optgroup{background:#16224d;color:#f2f5ff}
+html[data-theme="light"] select option,html[data-theme="light"] select optgroup{background:#ffffff;color:#14264f}

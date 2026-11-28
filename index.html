@@ -131,8 +131,7 @@ footer p{max-width:760px;margin:8px auto}footer a{color:var(--gold2)}footer a:ho
 .ap{padding:28px}.apt{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.apt button{font:600 16px Inter,sans-serif;color:var(--mu);background:var(--gl);border:1px solid var(--gb);border-radius:99px;padding:12px 22px;cursor:pointer;min-height:46px}.apt button.on{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1405;border-color:transparent}
 .apd{color:var(--mu);font-size:16.5px;margin:0 0 18px;max-width:780px}.apg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 .apg label{display:block;font-size:14.5px;font-weight:600;color:var(--mu)}.apg label small{display:block;font-weight:400;font-size:13px;opacity:.85;margin-top:2px}.apg .full{grid-column:1/-1}
-.apg input,.apg select,.apg textarea{width:100%;margin-top:7px;font:17px Inter,sans-serif;color:var(--tx);background:rgba(255,255,255,.07);border:1px solid var(--gb);border-radius:14px;padding:14px 16px;min-height:52px}.apg textarea{min-height:100px;resize:vertical}.apg select option{color:#111}
-.apg input:focus,.apg select:focus,.apg textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.apg input,.apg select,.apg textarea{width:100%;margin-top:7px;font:17px Inter,sans-serif;color:var(--tx);background:rgba(255,255,255,.07);border:1px solid var(--gb);border-radius:14px;padding:14px 16px;min-height:52px}.apg textarea{min-height:100px;resize:vertical}.apg input:focus,.apg select:focus,.apg textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
 .apc{display:flex;gap:12px;align-items:flex-start;margin:20px 0 6px;font-size:15px;color:var(--mu);cursor:pointer}.apc .apx{flex:1 1 0;min-width:0;line-height:1.55;overflow-wrap:anywhere}.apc input{width:22px;height:22px;flex:none;margin-top:3px;accent-color:#d4af5a}
 .apm{min-height:24px;margin:8px 0;font-size:15.5px;color:#ff8f8f}.apm.ok{color:#6fe0a0}
 #aps{position:relative;overflow:hidden;border:0;cursor:pointer;font-size:17px}#aps.ld{pointer-events:none;color:transparent}#aps.ld:after{content:"";position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border:2.5px solid rgba(0,0,0,.25);border-top-color:#111;border-radius:50%;animation:apsp .7s linear infinite}@keyframes apsp{to{transform:rotate(360deg)}}
@@ -615,6 +614,9 @@ html[data-theme="light"] .fm b{color:#6b4c0f}
 .theme-toggle{min-height:40px}.tool-btn,.quick-tools a{min-height:40px;display:inline-flex;align-items:center}
 .dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:10px}.dgrid>span{padding:8px 10px;border-radius:10px;border:1px solid var(--gb);background:var(--gl);font-size:14px;color:var(--mu)}.dgrid b{display:block;font-size:19px;color:var(--tx)}.dnote{display:block;margin-top:10px;color:var(--mu);font-size:14px;line-height:1.5}
 #dmw{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:22px 0 4px}#dmw:empty{display:none}
+/* v46: drop-down lists readable in dark AND light (option text colour was fixed to near-black on a dark list) */
+select option,select optgroup{background:#16224d;color:#f2f5ff}
+html[data-theme="light"] select option,html[data-theme="light"] select optgroup{background:#ffffff;color:#14264f}
 /* v35: no blank gaps. Tall blocks reveal as soon as they touch the screen; header does not eat the phone screen */
 .directory-layout.rv,.gr.rv,.pls.rv{opacity:1;transform:none}
 @media(max-width:760px){
